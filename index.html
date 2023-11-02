@@ -9,7 +9,7 @@
     const VALID_VERSIONS = "1.14,1.20"
     const DEFAULT_VERSION = "1.20"
     const version = ""//VALID_VERSION.includes(data.v)?data.v : DEFAULT_VERSION;
-    const velocity = Number(data.r) ?? 0.001;
+    const velocity = isNaN(Number(data.r)) ? Number(data.r) : 0.001;
     window.addEventListener('DOMContentLoaded', ()=>{
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
