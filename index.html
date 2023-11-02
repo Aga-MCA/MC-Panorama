@@ -2,10 +2,11 @@
 <html lang="en">
   <script type="module">
     import * as THREE from 'https://unpkg.com/three@0.158.0/build/three.module.js';
-    const {v="1.20",r="0.001"} =[...new URLSearchParams(location.href.split('?')[1])].reduce(
+    const {v="1.20",r} =[...new URLSearchParams(location.href.split('?')[1])].reduce(
     (a, [k, v]) => ((a[k] = v), a),
     {}
   );
+    const velocity = Number(r) ?? 0.001
     window.addEventListener('DOMContentLoaded', ()=>{
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
@@ -69,7 +70,7 @@
     const animate = () => {
       requestAnimationFrame(animate);
 
-      camera.rotation.y += r;
+      camera.rotation.y += velocity;
       renderer.render(scene, camera);
     };
 
