@@ -2,11 +2,14 @@
 <html lang="en">
   <script type="module">
     import * as THREE from 'https://unpkg.com/three@0.158.0/build/three.module.js';
-    const {v="1.20",r} =[...new URLSearchParams(location.href.split('?')[1])].reduce(
+    const data =[...new URLSearchParams(location.href.split('?')[1])].reduce(
     (a, [k, v]) => ((a[k] = v), a),
     {}
-  );
-    const velocity = Number(r) ?? 0.001
+  )
+    const VALID_VERSIONS = "1.14,1.20"
+    const DEFAULT_VERSION = "1.20"
+    const version = VALID_VERSION.includes(data.v)?data.v : DEFAULT_VERSION;
+    const velocity = Number(data.r) ?? 0.001;
     window.addEventListener('DOMContentLoaded', ()=>{
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
@@ -22,41 +25,39 @@
     // Crear un plano
     const geometry = new THREE.PlaneGeometry(3, 3); // Anchura y altura del plano
     const textureLoader = new THREE.TextureLoader();
-    const texture = textureLoader.load('https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png');
-    const material = new THREE.MeshBasicMaterial({ map: texture });
 
-    const materialFront = new THREE.MeshBasicMaterial({ map: textureLoader.load('./ui/panorama_0.png') });
+    const materialFront = new THREE.MeshBasicMaterial({ map: textureLoader.load(`./${version}/panorama_0.png`) });
     const front = new THREE.Mesh(geometry, materialFront);
     scene.add(front);
 
-    const materialRight = new THREE.MeshBasicMaterial({ map: textureLoader.load('./ui/panorama_1.png') });
+    const materialRight = new THREE.MeshBasicMaterial({ map: textureLoader.load(`./${version}/panorama_1.png`) });
     const left = new THREE.Mesh(geometry, materialRight);
     left.rotation.y = -Math.PI / 2;
     left.position.x = 1.5;
     left.position.z = 1.5;
     scene.add(left);  
     
-    const materialBack = new THREE.MeshBasicMaterial({ map: textureLoader.load('./ui/panorama_2.png') });
+    const materialBack = new THREE.MeshBasicMaterial({ map: textureLoader.load(`./${version}/panorama_2.png`) });
     const back = new THREE.Mesh(geometry, materialBack);
     back.rotation.y = Math.PI;
     back.position.z = 3;
     scene.add(back);
 
-    const materialLeft = new THREE.MeshBasicMaterial({ map: textureLoader.load('./ui/panorama_3.png') });
+    const materialLeft = new THREE.MeshBasicMaterial({ map: textureLoader.load(`./${version}/panorama_3.png`) });
     const right = new THREE.Mesh(geometry, materialLeft);
     right.rotation.y = Math.PI / 2;
     right.position.x = -1.5;
     right.position.z = 1.5;
     scene.add(right);
 
-    const materialUp = new THREE.MeshBasicMaterial({ map: textureLoader.load('./ui/panorama_4.png') });
+    const materialUp = new THREE.MeshBasicMaterial({ map: textureLoader.load(`./${version}/panorama_4.png`) });
     const top = new THREE.Mesh(geometry, materialUp);
     top.rotation.x = Math.PI / 2;
     top.position.z = 1.5;
     top.position.y = 1.5;
     scene.add(top);
 
-    const materialDown = new THREE.MeshBasicMaterial({ map: textureLoader.load('./ui/panorama_5.png') });
+    const materialDown = new THREE.MeshBasicMaterial({ map: textureLoader.load(`./${version}/panorama_5.png`) });
     const bottom = new THREE.Mesh(geometry, materialDown);
     bottom.rotation.x = -Math.PI / 2;
     bottom.position.z = 1.5;
