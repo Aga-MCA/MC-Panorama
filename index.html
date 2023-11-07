@@ -91,7 +91,7 @@
       const animate = () => {
         requestAnimationFrame(animate);
 
-        camera.rotation.y += velocity;
+        camera.rotation.y -= velocity;
         renderer.render(scene, camera);
       };
 
