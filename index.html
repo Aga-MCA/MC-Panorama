@@ -2,80 +2,101 @@
 <html lang="en">
   <script type="module">
     import * as THREE from 'https://unpkg.com/three@0.158.0/build/three.module.js';
-    const data =[...new URLSearchParams(location.href.split('?')[1])].reduce(
-    (a, [k, v]) => ((a[k] = v), a),
-    {}
-  )
-    const VALID_VERSIONS = "1.14,1.16,1.17,1.18,1.19,1.20"
-    const DEFAULT_VERSION = "1.20"
-    const version = VALID_VERSIONS.includes(data.v)?data.v : DEFAULT_VERSION;
-    const velocity = isNaN(Number(data.r)) ? 0.001 : Number(data.r)
-    window.addEventListener('DOMContentLoaded', ()=>{
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
+    const data = [...new URLSearchParams(location.href.split('?')[1])].reduce(
+      (a, [k, v]) => ((a[k] = v), a),
+      {}
     );
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+    const VALID_VERSIONS = '1.14,1.16,1.17,1.18,1.19,1.20';
+    const DEFAULT_VERSION = '1.20';
+    const version = VALID_VERSIONS.includes(data.v) ? data.v : DEFAULT_VERSION;
+    const velocity = isNaN(Number(data.r)) ? 0.001 : Number(data.r);
+    window.addEventListener('DOMContentLoaded', () => {
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      const renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      window.addEventListener('resize', onWindowResize, false);
 
-    // Crear un plano
-    const geometry = new THREE.PlaneGeometry(3, 3); // Anchura y altura del plano
-    const textureLoader = new THREE.TextureLoader();
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
 
-    const materialFront = new THREE.MeshBasicMaterial({ map: textureLoader.load(`./${version}/panorama_0.png`) });
-    const front = new THREE.Mesh(geometry, materialFront);
-    scene.add(front);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+      document.body.appendChild(renderer.domElement);
 
-    const materialRight = new THREE.MeshBasicMaterial({ map: textureLoader.load(`./${version}/panorama_1.png`) });
-    const left = new THREE.Mesh(geometry, materialRight);
-    left.rotation.y = -Math.PI / 2;
-    left.position.x = 1.5;
-    left.position.z = 1.5;
-    scene.add(left);  
-    
-    const materialBack = new THREE.MeshBasicMaterial({ map: textureLoader.load(`./${version}/panorama_2.png`) });
-    const back = new THREE.Mesh(geometry, materialBack);
-    back.rotation.y = Math.PI;
-    back.position.z = 3;
-    scene.add(back);
+      // Crear un plano
+      const geometry = new THREE.PlaneGeometry(3, 3); // Anchura y altura del plano
+      const textureLoader = new THREE.TextureLoader();
 
-    const materialLeft = new THREE.MeshBasicMaterial({ map: textureLoader.load(`./${version}/panorama_3.png`) });
-    const right = new THREE.Mesh(geometry, materialLeft);
-    right.rotation.y = Math.PI / 2;
-    right.position.x = -1.5;
-    right.position.z = 1.5;
-    scene.add(right);
+      const materialFront = new THREE.MeshBasicMaterial({
+        map: textureLoader.load(`./${version}/panorama_0.png`),
+      });
+      const front = new THREE.Mesh(geometry, materialFront);
+      scene.add(front);
 
-    const materialUp = new THREE.MeshBasicMaterial({ map: textureLoader.load(`./${version}/panorama_4.png`) });
-    const top = new THREE.Mesh(geometry, materialUp);
-    top.rotation.x = Math.PI / 2;
-    top.position.z = 1.5;
-    top.position.y = 1.5;
-    scene.add(top);
+      const materialRight = new THREE.MeshBasicMaterial({
+        map: textureLoader.load(`./${version}/panorama_1.png`),
+      });
+      const left = new THREE.Mesh(geometry, materialRight);
+      left.rotation.y = -Math.PI / 2;
+      left.position.x = 1.5;
+      left.position.z = 1.5;
+      scene.add(left);
 
-    const materialDown = new THREE.MeshBasicMaterial({ map: textureLoader.load(`./${version}/panorama_5.png`) });
-    const bottom = new THREE.Mesh(geometry, materialDown);
-    bottom.rotation.x = -Math.PI / 2;
-    bottom.position.z = 1.5;
-    bottom.position.y = -1.5;
-    scene.add(bottom);
+      const materialBack = new THREE.MeshBasicMaterial({
+        map: textureLoader.load(`./${version}/panorama_2.png`),
+      });
+      const back = new THREE.Mesh(geometry, materialBack);
+      back.rotation.y = Math.PI;
+      back.position.z = 3;
+      scene.add(back);
 
-    // Configuración de la cámara
-    camera.position.z = 1.5;
+      const materialLeft = new THREE.MeshBasicMaterial({
+        map: textureLoader.load(`./${version}/panorama_3.png`),
+      });
+      const right = new THREE.Mesh(geometry, materialLeft);
+      right.rotation.y = Math.PI / 2;
+      right.position.x = -1.5;
+      right.position.z = 1.5;
+      scene.add(right);
 
-    // Animación del plano
-    const animate = () => {
-      requestAnimationFrame(animate);
+      const materialUp = new THREE.MeshBasicMaterial({
+        map: textureLoader.load(`./${version}/panorama_4.png`),
+      });
+      const top = new THREE.Mesh(geometry, materialUp);
+      top.rotation.x = Math.PI / 2;
+      top.position.z = 1.5;
+      top.position.y = 1.5;
+      scene.add(top);
 
-      camera.rotation.y += velocity;
-      renderer.render(scene, camera);
-    };
+      const materialDown = new THREE.MeshBasicMaterial({
+        map: textureLoader.load(`./${version}/panorama_5.png`),
+      });
+      const bottom = new THREE.Mesh(geometry, materialDown);
+      bottom.rotation.x = -Math.PI / 2;
+      bottom.position.z = 1.5;
+      bottom.position.y = -1.5;
+      scene.add(bottom);
 
-    animate();})
+      // Configuración de la cámara
+      camera.position.z = 1.5;
+
+      // Animación del plano
+      const animate = () => {
+        requestAnimationFrame(animate);
+
+        camera.rotation.y += velocity;
+        renderer.render(scene, camera);
+      };
+
+      animate();
+    });
   </script>
   <style>
     body {
