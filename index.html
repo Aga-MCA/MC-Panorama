@@ -19,6 +19,9 @@
         1000
       );
       const renderer = new THREE.WebGLRenderer();
+      THREE.ColorManagement.legacyMode = false
+      renderer.outputEncoding = THREE.sRGBEncoding
+      renderer.toneMapping = THREE.ACESFilmicToneMapping
       renderer.setSize(window.innerWidth, window.innerHeight);
       window.addEventListener('resize', onWindowResize, false);
 
