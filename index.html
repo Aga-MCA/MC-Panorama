@@ -8,8 +8,7 @@
     );
     const VALID_VERSIONS = [
       "1.14", "1.16", "1.17", "1.18", "1.19", "1.20", "1.21",
-      "1.21.50", "1.21.70", "1.21.90",
-      "1.21.111", "1.21.130"
+        "1.21.50", "1.21.70", "1.21.90", "1.21.111", "1.21.130"
     ];
     const DEFAULT_VERSION = VALID_VERSIONS[VALID_VERSIONS.length - 1];
     const version = VALID_VERSIONS.includes(data.v) ? data.v : DEFAULT_VERSION;
@@ -46,7 +45,7 @@
 
       function loadMaterial(n) {
         return new THREE.MeshBasicMaterial({
-          map: textureLoader.load(`./${version}/panorama_${n}.png`),
+          map: textureLoader.load(`./${version.replaceAll('.', '/')}/panorama_${n}.png`),
           color: new THREE.Color(0xffffff).multiplyScalar(0.5),
         });
       }
